@@ -1,32 +1,53 @@
 <?php
-    // reference the Dompdf namespace
-    include 'assets/dompdf/src/Dompdf';
-    include 'conn.php';
+   include 'conn.php';
 
-    $html = 
-        '<table border="1">'.
-            '<tr>'.
-                '<th>No</th>'.
-                '<th>NIM</th>'.
-                '<th>Nama Mahasiswa</th>'.
-                '<th>Semester</th>'.
-                '<th>Jurusan</th>'.
-            '</tr>'.
+   $content = '
+        <style type="text/css">
+            h2 { text-align : center; }
+            th { text-align : center; }
+        </style>
+   ';
 
-        '</table>'
+   $content .= '
+        <h2>Laporan</h2><hr><br><br>
 
-    ;
+        <table border="1" cellpadding="15" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>NIM</th>
+                    <th>Nama Mahasiswa</th>
+                    <th>Semester</th>
+                    <th>Jurusan</th>
+                </tr>
+            </thead>
+   ';
 
-    // instantiate and use the dompdf class
-    $dompdf = new Dompdf();
-    $dompdf->loadHtml($html);
+    $no = 1;
+    $query = mysqli_query($conn, "SELECT * FROM tbl_mahasiswa");
+    while($data = mysqli_fetch_array($query)) {
 
-    // (Optional) Setup the paper size and orientation
-    $dompdf->setPaper('A4', 'landscape');
+   $content .= '
+            <tbody>
+                <tr>
+                    <td>' . $no++ . '</td>
+                    <td>' . $data["nim"] . '</td>
+                    <td>' . $data["nama"] . '</td>
+                    <td>' . $data["semester"] . '</td>
+                    <td>' . $data["jurusan"] . '</td>
+                </tr>
+            </tbody>
+   ';
 
-    // Render the HTML as PDF
-    $dompdf->render();
+    }
 
-    // Output the generated PDF to Browser
-    $dompdf->stream();
+   $content .= '
+        </table>
+   ';
+
+
+    require_once('assets/html2pdf/html2pdf.class.php');
+    $html2pdf = new HTML2PDF('P', 'A4', 'en');
+    $html2pdf->WriteHTML($content);
+    $html2pdf->Output('crudsepare-mahasiswa.pdf');
 ?>

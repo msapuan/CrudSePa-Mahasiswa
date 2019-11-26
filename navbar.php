@@ -17,7 +17,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="?page=tampil"><span class="glyphicon glyphicon-th-list"></span> Tampil</a></li>
                 <li><a href="?page=input"><span class="glyphicon glyphicon-pencil"></span> Input</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-file"></span> Laporan</a></li>
+                <li><a href="report.php"><span class="glyphicon glyphicon-file"></span> Laporan</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
